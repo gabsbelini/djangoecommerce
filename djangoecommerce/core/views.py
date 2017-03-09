@@ -4,4 +4,7 @@ from django.http import HttpResponse
 
 
 def index(request):
-    return HttpResponse('hello amigo')
+    texts = ['texto aleatorio', 'outro texto alalala']
+    context = {'title': 'kDjango E-commerSSe',
+               'texts': texts}
+    return render(request, 'index.html', context)
