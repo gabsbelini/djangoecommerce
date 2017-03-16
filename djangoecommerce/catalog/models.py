@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.core.urlresolvers import reverse
 # Create your models here.
 
 
@@ -18,6 +18,12 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        """ Reverse usa o nome da url e os parametros nomeados (kwargs) e nao
+    nomeados (args) e retorna o endereco da url. """
+        return reverse('catalog:category', kwargs={'slug': self.slug})
+
 
 class Product(models.Model):
 
