@@ -4,7 +4,7 @@ from django.test import TestCase, Client
 
 class IndexViewTestCase(TestCase):
 
-    def setUP(self):
+    def setUp(self):
         self.client = Client()
 
     def tearDown(self):
