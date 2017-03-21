@@ -9,7 +9,7 @@
   <h1>Produtos</h1>
 </div>
 <div class="row">
-  {% for product in product_list %}
+  {% for product in products %}
   <div class="col-sm-6 col-md-4">
     <div class="thumbnail">
       <a href="{{ product.get_absolute_url }}">
@@ -23,6 +23,16 @@
     </div>
   </div>
   {% endfor %}
-
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <nav>
+      <ul class="pagination">
+        {% for page in paginator.page_range %}
+        <li><a href="?page={{ page }}">{{ page }}</a></li>
+        {% endfor %}
+      </ul>
+      </nav>
+  </div>
 </div>
 {% endblock %}
