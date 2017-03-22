@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load pagination %}
+
 {% block title %}
   Listagem de Produtos | {{ block.super }}
 {% endblock %}
@@ -24,15 +26,5 @@
   </div>
   {% endfor %}
 </div>
-<div class="row">
-  <div class="col-md-12">
-    <nav>
-      <ul class="pagination">
-        {% for page in paginator.page_range %}
-        <li><a href="?page={{ page }}">{{ page }}</a></li>
-        {% endfor %}
-      </ul>
-      </nav>
-  </div>
-</div>
+{% pagination request paginator page_obj %}
 {% endblock %}
