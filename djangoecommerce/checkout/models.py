@@ -3,8 +3,19 @@ from django.db import models
 
 class CartItemManager(models.Manager):
 
-    def add_item(self, key, product):
-        pass
+    def add_item(self, cart_key, product):  # Verifica se produto ja ta no
+        #  carrinho, se ja estiver aumenta quantidade.
+        if self.filter(cart_key=cart_key, product=product).exists():
+            created = False
+            cart_item = self.get(cart_key=cart_key, product=product)
+            cart_item.quantity = cart_item.quantity + 1
+            cart_item.save()
+        else:
+            created = True
+            cart_item = CartItem.objects.create(cart_key=cart_key,
+                                                product=product,
+                                                price=product.price)
+        return cart_item, created
 
 
 class CartItem(models.Model):
@@ -20,7 +31,8 @@ class CartItem(models.Model):
     class Meta:
         verbose_name = 'Item do Carrinho'
         verbose_name_plural = 'Itens dos Carrinhos'
-        # Evita duplicidade de produtos no mesmo Carrinho. Inves de ter 2 produtos tem 1 produto com quantidade 2.
+        # Evita duplicidade de produtos no mesmo Carrinho.
+        # Inves de ter 2 produtos tem 1 produto com quantidade 2.
         unique_together = (('cart_key', 'product'),)
 
     def __str__(self):
