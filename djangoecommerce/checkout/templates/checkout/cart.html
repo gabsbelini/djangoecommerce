@@ -51,7 +51,9 @@
                                   {% render_field form.quantity class='form-control' %}
                         </td>
         <td class="text-center">
-          <button value="on" type="button" name="{{ form.DELETE.html_name }}" class=btn btn-danger btn-sm>remover</button>
+          <button value="on" type="submit" name="{{ form.DELETE.html_name }}"
+           class=btn btn-danger btn-sm>remover</button>
+           {{ form.id }}
 
         </td>
                     </tr>            {% endfor %}
