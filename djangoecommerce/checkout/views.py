@@ -63,5 +63,27 @@ class CartItemView(TemplateView):
             context['formset'] = self.get_formset(clear=True)
         return self.render_to_response(context)
 
+
+class CheckoutView(LoginRequiredMixin, TemplateView):
+
+    template_name = 'checkout/checkout.html'
+
+    def get(self, request, *args, **kwargs):
+        """Renderiza o template.
+
+        Altera o funcionamento natural, e depois chama o comportamento natural.
+        """
+        session_key = request.session.session_key
+        if session_key and CartItem.objects.filter(cart_key=session_key).exists():
+            cart_items = CartItem.objects.filter(cart_key=session_key)
+            order = Order.objects.create_order(
+                user=request.user, cart_items=cart_items
+            )
+        else:
+            messages.info(request, 'Nao ha itens no carrinho de compras')
+            return redirect('checkout:cart_item')
+        return super(CheckoutView, self).get(request, *args, **kwargs)
+
+
 create_cartitem = CreateCartItemView.as_view()
 cart_item = CartItemView.as_view()
