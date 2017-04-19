@@ -1,12 +1,13 @@
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import RedirectView, TemplateView
 from django.forms import modelformset_factory
 from django.contrib import messages
-from django.core.urlresolvers import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.urlresolvers import reverse
 
 from catalog.models import Product
 
-from .models import CartItem
+from .models import CartItem, Order
 
 
 class CreateCartItemView(RedirectView):
@@ -24,13 +25,12 @@ class CreateCartItemView(RedirectView):
             messages.success(self.request, 'Produto adicionado com sucesso')
         else:
             messages.success(self.request, 'Produto atualizado com sucesso')
-        return reverse_lazy('checkout:cart_item')
+        return reverse('checkout:cart_item')
 
 
 class CartItemView(TemplateView):
 
     template_name = 'checkout/cart.html'
-
 
     def get_formset(self, clear=False):
         CartItemFormSet = modelformset_factory(CartItem, fields=('quantity',),
@@ -87,3 +87,4 @@ class CheckoutView(LoginRequiredMixin, TemplateView):
 
 create_cartitem = CreateCartItemView.as_view()
 cart_item = CartItemView.as_view()
+checkout = CheckoutView.as_view()
